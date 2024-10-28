@@ -1,0 +1,43 @@
+if(@ptnum == 0)
+{
+    v@__target_pos = point(0, "P", 1);
+    v@__motion_dir = normalize(v@__target_pos - @P);
+    setpointattrib(0, "__motion_dir", 1, v@__motion_dir, "set");
+}
+
+
+vector current_pos = @P;
+vector current_vel = point(0, "__motion_dir", @ptnum);
+
+int max_points = 10; // Adjust this value as needed
+float search_radius = 10; // Adjust this value based on your scene
+int near_pts[] = nearpoints(0, current_pos, search_radius, max_points);
+
+int best_point = -1;
+float max_dot = -1;
+
+foreach (int pt; near_pts) {
+
+    if (pt == @ptnum) {
+        continue;
+    }
+
+
+    vector neighbor_pos = point(0, "P", pt);
+    vector neighbor_vel = point(0, "__motion_dir", pt);
+
+    vector to_neighbor = normalize(neighbor_pos - current_pos);
+
+    float dot_product = dot(current_vel, to_neighbor);
+
+    if (dot_product > max_dot && dot_product > 0) {
+        max_dot = dot_product;
+        best_point = pt;
+    }
+}
+
+if (best_point != -1) {
+    @target = best_point; // Set the found point as a target
+} else {
+    @target = -1; // No valid point found
+}
