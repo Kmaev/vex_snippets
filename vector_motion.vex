@@ -9,8 +9,8 @@ if(@ptnum == 0)
 vector current_pos = @P;
 vector current_vel = point(0, "__motion_dir", @ptnum);
 
-int max_points = 10; // Adjust this value as needed
-float search_radius = 10; // Adjust this value based on your scene
+int max_points = 10;
+float search_radius = 10;
 int near_pts[] = nearpoints(0, current_pos, search_radius, max_points);
 
 int best_point = -1;
@@ -37,7 +37,7 @@ foreach (int pt; near_pts) {
 }
 
 if (best_point != -1) {
-    @target = best_point; // Set the found point as a target
+    @target = best_point;
 } else {
-    @target = -1; // No valid point found
+    @target = -1; 
 }
